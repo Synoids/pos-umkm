@@ -30,6 +30,7 @@ export const inventoryService = {
     deltaQuantity: number
     reasonCode: string
     source: MovementSource
+    operationId: string // Mandatory for idempotency
     unitCost?: number
     referenceId?: string
     metadata?: any
@@ -55,10 +56,12 @@ export const inventoryService = {
         delta_quantity: params.deltaQuantity,
         reason_id: reason.id,
         source: params.source,
-        unit_cost: params.unitCost,
+        operation_id: params.operationId,
+        unit_cost_snapshot: params.unitCost,
         reference_id: params.referenceId,
         metadata: params.metadata || {},
-        created_by: params.userId
+        created_by: params.userId,
+        actor_type: 'USER'
       })
       .select()
       .single()
@@ -75,6 +78,7 @@ export const inventoryService = {
     productId: string
     actualQuantity: number
     userId: string
+    operationId: string
     note?: string
   }) {
     const supabase = createClient()
@@ -98,6 +102,7 @@ export const inventoryService = {
       deltaQuantity: delta,
       reasonCode: 'MANUAL_ADJUSTMENT',
       source: 'MANUAL',
+      operationId: params.operationId,
       userId: params.userId,
       metadata: { note: params.note }
     })

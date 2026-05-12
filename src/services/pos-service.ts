@@ -17,25 +17,23 @@ export const posService = {
    * This handles locking, stock validation, and ledger entries in one DB transaction.
    */
   async processTransaction(params: {
-    organizationId: string
-    profileId: string
+    operationId: string
     items: CartItem[]
     paymentMethod: PaymentMethod
-    idempotencyKey: string
+    auditContext?: any
   }) {
     const supabase = createClient()
 
-    // We call a custom Postgres function (RPC) for atomicity
-    const { data, error } = await supabase.rpc('process_pos_transaction', {
-      p_organization_id: params.organizationId,
-      p_profile_id: params.profileId,
+    // We call the hardened version (v4) of the RPC
+    const { data, error } = await supabase.rpc('process_pos_transaction_v4', {
+      p_operation_id: params.operationId,
       p_items: params.items.map(item => ({
         product_id: item.productId,
         quantity: item.quantity,
         unit_price: item.price
       })),
       p_payment_method: params.paymentMethod,
-      p_idempotency_key: params.idempotencyKey
+      p_audit_context: params.auditContext || {}
     })
 
     if (error) {
