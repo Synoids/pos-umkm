@@ -503,15 +503,18 @@ function SidebarMenuButton({
   size = "default",
   tooltip,
   className,
+  nativeButton,
   ...props
 }: useRender.ComponentProps<"button"> &
   React.ComponentProps<"button"> & {
     isActive?: boolean
     tooltip?: string | React.ComponentProps<typeof TooltipContent>
+    nativeButton?: boolean
   } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar()
   const comp = useRender({
     defaultTagName: "button",
+    nativeButton: nativeButton ?? (render ? false : true),
     props: mergeProps<"button">(
       {
         className: cn(sidebarMenuButtonVariants({ variant, size }), className),
@@ -668,14 +671,17 @@ function SidebarMenuSubButton({
   size = "md",
   isActive = false,
   className,
+  nativeButton,
   ...props
 }: useRender.ComponentProps<"a"> &
   React.ComponentProps<"a"> & {
     size?: "sm" | "md"
     isActive?: boolean
+    nativeButton?: boolean
   }) {
   return useRender({
     defaultTagName: "a",
+    nativeButton: nativeButton ?? false,
     props: mergeProps<"a">(
       {
         className: cn(

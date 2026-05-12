@@ -85,8 +85,7 @@ export default function OnboardingPage() {
       }
 
       toast.success("Organization created! Launching your terminal...")
-      router.push("/dashboard")
-      router.refresh()
+      window.location.href = "/dashboard"
     } catch (error: any) {
       toast.error(error.message || "Failed to create organization")
     } finally {

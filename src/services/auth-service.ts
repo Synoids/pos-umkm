@@ -55,14 +55,15 @@ export const authService = {
     
     if (orgError) throw orgError
 
-    // 2. Update profile with organization_id and owner role
+    // 2. Update profile with organization_id and owner role using UPSERT
     const { error: profileError } = await (supabase as any)
       .from('profiles')
-      .update({ 
+      .upsert({ 
+        id: userId,
         organization_id: org.id,
-        role: 'owner'
+        role: 'owner',
+        updated_at: new Date().toISOString()
       })
-      .eq('id', userId)
 
     if (profileError) throw profileError
     
