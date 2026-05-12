@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { inventoryService } from "@/services/inventory-service"
-import { useAuth } from "@/providers/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import { POSProductList } from "./pos-product-list"
 import { POSCart } from "./pos-cart"
 import { Input } from "@/components/ui/input"

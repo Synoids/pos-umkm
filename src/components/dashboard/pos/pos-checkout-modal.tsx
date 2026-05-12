@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useCartStore } from "@/store/use-cart-store"
 import { posService, PaymentMethod } from "@/services/pos-service"
-import { useAuth } from "@/providers/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import { 
   Dialog, 
   DialogContent, 

@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { createClient } from "@/lib/supabase/client"
-import { useAuth } from "@/providers/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import { 
   Table, 
   TableBody, 
