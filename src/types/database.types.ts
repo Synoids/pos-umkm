@@ -9,6 +9,79 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      inventory_reasons: {
+        Row: {
+          id: string
+          organization_id: string | null
+          category: 'INBOUND' | 'OUTBOUND' | 'ADJUSTMENT'
+          code: string
+          label: string
+          is_system: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id?: string | null
+          category: 'INBOUND' | 'OUTBOUND' | 'ADJUSTMENT'
+          code: string
+          label: string
+          is_system?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          organization_id?: string | null
+          category?: 'INBOUND' | 'OUTBOUND' | 'ADJUSTMENT'
+          code?: string
+          label?: string
+          is_system?: boolean
+          created_at?: string
+        }
+      }
+      stock_movements: {
+        Row: {
+          id: string
+          organization_id: string
+          product_id: string
+          delta_quantity: number
+          unit_cost: number | null
+          reason_id: string
+          source: 'POS' | 'API' | 'MARKETPLACE' | 'SYSTEM' | 'MANUAL'
+          reference_id: string | null
+          sequence_number: number
+          metadata: Json
+          created_at: string
+          created_by: string | null
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          product_id: string
+          delta_quantity: number
+          unit_cost?: number | null
+          reason_id: string
+          source: 'POS' | 'API' | 'MARKETPLACE' | 'SYSTEM' | 'MANUAL'
+          reference_id?: string | null
+          sequence_number?: number
+          metadata?: Json
+          created_at?: string
+          created_by?: string | null
+        }
+        Update: {
+          id?: string
+          organization_id?: string
+          product_id?: string
+          delta_quantity?: number
+          unit_cost?: number | null
+          reason_id?: string
+          source?: 'POS' | 'API' | 'MARKETPLACE' | 'SYSTEM' | 'MANUAL'
+          reference_id?: string | null
+          sequence_number?: number
+          metadata?: Json
+          created_at?: string
+          created_by?: string | null
+        }
+      }
       organizations: {
         Row: {
           id: string
@@ -38,6 +111,7 @@ export type Database = {
           organization_id: string | null
           full_name: string | null
           role: Database['public']['Enums']['user_role']
+          deleted_at: string | null
           created_at: string
           updated_at: string
         }
@@ -46,6 +120,7 @@ export type Database = {
           organization_id?: string | null
           full_name?: string | null
           role?: Database['public']['Enums']['user_role']
+          deleted_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -54,6 +129,7 @@ export type Database = {
           organization_id?: string | null
           full_name?: string | null
           role?: Database['public']['Enums']['user_role']
+          deleted_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -66,9 +142,12 @@ export type Database = {
           description: string | null
           price: number
           stock: number
+          stock_reserved: number
           sku: string | null
           category: string | null
           image_url: string | null
+          metadata: Json
+          deleted_at: string | null
           created_at: string
           updated_at: string
         }
@@ -79,9 +158,12 @@ export type Database = {
           description?: string | null
           price: number
           stock?: number
+          stock_reserved?: number
           sku?: string | null
           category?: string | null
           image_url?: string | null
+          metadata?: Json
+          deleted_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -92,9 +174,12 @@ export type Database = {
           description?: string | null
           price?: number
           stock?: number
+          stock_reserved?: number
           sku?: string | null
           category?: string | null
           image_url?: string | null
+          metadata?: Json
+          deleted_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -106,7 +191,10 @@ export type Database = {
           profile_id: string
           total_amount: number
           payment_method: Database['public']['Enums']['payment_method']
-          status: string
+          status: Database['public']['Enums']['transaction_status']
+          idempotency_key: string | null
+          metadata: Json
+          deleted_at: string | null
           created_at: string
         }
         Insert: {
@@ -115,7 +203,10 @@ export type Database = {
           profile_id: string
           total_amount: number
           payment_method: Database['public']['Enums']['payment_method']
-          status?: string
+          status: Database['public']['Enums']['transaction_status']
+          idempotency_key?: string | null
+          metadata?: Json
+          deleted_at?: string | null
           created_at?: string
         }
         Update: {
@@ -124,7 +215,10 @@ export type Database = {
           profile_id?: string
           total_amount?: number
           payment_method?: Database['public']['Enums']['payment_method']
-          status?: string
+          status?: Database['public']['Enums']['transaction_status']
+          idempotency_key?: string | null
+          metadata?: Json
+          deleted_at?: string | null
           created_at?: string
         }
       }
@@ -199,6 +293,9 @@ export type Database = {
     Enums: {
       user_role: 'owner' | 'manager' | 'cashier'
       payment_method: 'cash' | 'debit' | 'credit' | 'qris'
+      transaction_status: 'pending' | 'completed' | 'cancelled' | 'refunded'
     }
+  }
+}
   }
 }
