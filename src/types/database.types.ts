@@ -197,7 +197,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      user_role: 'admin' | 'manager' | 'staff'
+      user_role: 'owner' | 'manager' | 'cashier'
       payment_method: 'cash' | 'debit' | 'credit' | 'qris'
     }
   }

@@ -21,8 +21,8 @@ export default function LandingPage() {
         </p>
         
         <div className="flex gap-4 mt-4">
-          <Button asChild size="lg" className="px-8 rounded-full shadow-[0_0_20px_rgba(0,100,255,0.2)]">
-            <Link href="/dashboard">Enter Dashboard</Link>
+          <Button render={<Link href="/dashboard" />} size="lg" className="px-8 rounded-full shadow-[0_0_20px_rgba(0,100,255,0.2)]">
+            Enter Dashboard
           </Button>
           <Button variant="outline" size="lg" className="px-8 rounded-full">
             Documentation

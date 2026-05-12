@@ -5,7 +5,8 @@ import {
   Package, 
   CreditCard,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  History as HistoryIcon
 } from "lucide-react"
 
 export default function DashboardPage() {
@@ -92,7 +93,7 @@ export default function DashboardPage() {
               {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="flex items-center gap-4">
                   <div className="size-9 rounded-full bg-primary/10 flex items-center justify-center">
-                    <History className="size-4 text-primary" />
+                    <HistoryIcon className="size-4 text-primary" />
                   </div>
                   <div className="flex-1 space-y-1">
                     <p className="text-sm font-medium leading-none">

@@ -29,7 +29,39 @@ export async function updateSession(request: NextRequest) {
   )
 
   // refreshing the auth token
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const url = request.nextUrl.clone()
+  const isAuthPage = url.pathname.startsWith('/login') || url.pathname.startsWith('/register')
+  const isDashboardPage = url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/pos') || url.pathname.startsWith('/inventory') || url.pathname.startsWith('/transactions') || url.pathname.startsWith('/staff')
+  const isOnboardingPage = url.pathname.startsWith('/onboarding')
+
+  // If trying to access dashboard but not logged in, redirect to login
+  if (isDashboardPage && !user) {
+    url.pathname = '/login'
+    url.searchParams.set('next', request.nextUrl.pathname)
+    return NextResponse.redirect(url)
+  }
+
+  // If logged in and on auth page, redirect to dashboard
+  if (isAuthPage && user) {
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  // If logged in but no organization, redirect to onboarding (except if already on onboarding)
+  if (user && isDashboardPage && !isOnboardingPage) {
+    const { data: profile } = await (supabase as any)
+      .from('profiles')
+      .select('organization_id')
+      .eq('id', user.id)
+      .single()
+
+    if (!profile?.organization_id) {
+      url.pathname = '/onboarding'
+      return NextResponse.redirect(url)
+    }
+  }
 
   return supabaseResponse
 }
